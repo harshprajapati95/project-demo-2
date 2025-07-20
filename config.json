@@ -1,0 +1,59 @@
+{
+  "site": {
+    "title": "EduHub",
+    "description": "Your comprehensive educational portal for notes, assignments, and resources",
+    "version": "1.0.0",
+    "author": "EduHub Development Team"
+  },
+  "theme": {
+    "primary_color": "#000000",
+    "secondary_color": "#ffffff",
+    "accent_color": "#333333",
+    "background_color": "#000000",
+    "text_color": "#ffffff",
+    "link_color": "#cccccc"
+  },
+  "features": {
+    "search_enabled": true,
+    "download_enabled": true,
+    "mobile_responsive": true,
+    "dark_mode": true,
+    "animations": true
+  },
+  "content_types": [
+    "teacher-notes",
+    "student-notes",
+    "resources",
+    "assignments",
+    "pyqs",
+    "syllabus"
+  ],
+  "file_types": {
+    "pdf": {
+      "icon": "fas fa-file-pdf",
+      "color": "#ff6b6b"
+    },
+    "doc": {
+      "icon": "fas fa-file-word",
+      "color": "#4dabf7"
+    },
+    "ppt": {
+      "icon": "fas fa-file-powerpoint",
+      "color": "#ff922b"
+    },
+    "link": {
+      "icon": "fas fa-external-link-alt",
+      "color": "#51cf66"
+    }
+  },
+  "navigation": {
+    "smooth_scroll": true,
+    "auto_highlight": true,
+    "mobile_menu": true
+  },
+  "performance": {
+    "lazy_loading": true,
+    "image_optimization": true,
+    "caching": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "eduhub",
+  "version": "1.0.0",
+  "description": "Educational Hub - File Management System for Students",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
+    "install-deps": "cd server && npm install"
+  },
+  "keywords": [
+    "education",
+    "file-management",
+    "student-portal",
+    "mongodb",
+    "express"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
