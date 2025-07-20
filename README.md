@@ -1,172 +1,107 @@
-# 🎓 EduHub - Educational File Management System
+# EduHub Server
 
-A modern web application for students to organize and access educational materials by semester and subject.
+Backend server for the B.Sc. Computer Science Educational Portal with MongoDB integration.
 
-## 📁 Project Structure
+## Setup Instructions
 
-```
-eduhub/
-├── public/                 # Frontend files
-│   ├── index.html         # Main HTML file
-│   ├── css/               # Stylesheets
-│   ├── js/                # JavaScript files
-│   ├── manifest.json      # PWA manifest
-│   └── sw.js              # Service worker
-├── server/                # Backend server
-│   ├── server.js          # Main server file
-│   ├── package.json       # Server dependencies
-│   ├── .env               # Environment variables
-│   ├── data.json          # JSON fallback storage
-│   └── uploads/           # Uploaded files
-├── package.json           # Main project file
-└── README.md              # This file
+### 1. Install Dependencies
+```bash
+cd server
+npm install
 ```
 
-## 🚀 Quick Start
+### 2. Set Up MongoDB Database
 
-1. **Install Dependencies**
-   ```bash
-   npm run install-deps
+#### Option A: MongoDB Atlas (Cloud - Recommended)
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a free account and cluster
+3. Create a database user
+4. Get your connection string
+5. Update the `.env` file with your connection string
+
+#### Option B: Local MongoDB
+1. Install MongoDB locally
+2. Start MongoDB service
+3. Update `.env` file: `MONGODB_URI=mongodb://localhost:27017/eduhub`
+
+### 3. Configure Environment Variables
+1. Copy `.env.example` to `.env` (if exists)
+2. Update the `MONGODB_URI` in `.env` with your actual connection string
+3. Example:
+   ```
+   MONGODB_URI=mongodb+srv://your-username:your-password@cluster0.mongodb.net/eduhub?retryWrites=true&w=majority
+   PORT=5000
    ```
 
-2. **Start the Server**
-   ```bash
-   npm start
-   ```
+### 4. Start the Server
+```bash
+# Development mode (with auto-reload)
+npm run dev
 
-3. **Open in Browser**
-   ```
-   http://localhost:5000
-   ```
-
-## 🔧 Features
-
-- ✅ File upload and management
-- ✅ Semester and subject organization
-- ✅ MongoDB database storage
-- ✅ JSON fallback for offline use
-- ✅ Progressive Web App (PWA)
-- ✅ Responsive design
-- ✅ Delete functionality
-- ✅ Multiple file formats support
-
-## 🗄️ Database
-
-- **Primary**: MongoDB (automatic fallback to JSON)
-- **Connection**: `mongodb://localhost:27017/eduhub`
-- **Collections**: `contents` (file metadata) 
-  - Teacher Notes
-  - Student Notes
-  - Educational Resources
-  - Assignments
-  - Previous Year Questions (PYQs)
-  - Syllabus
-- **Interactive Navigation**: Smooth scrolling and mobile-friendly navigation
-- **Modal System**: Detailed subject content displayed in elegant modals
-- **Search Functionality**: Easy content discovery
-- **Download System**: Downloadable resources for offline access
-
-## Subjects Included
-
-1. **Mathematics** - Calculus, Algebra, Statistics
-2. **Physics** - Mechanics, Thermodynamics, Optics
-3. **Chemistry** - Organic, Inorganic, Physical
-4. **Computer Science** - Programming, Data Structures, Algorithms
-5. **English** - Literature, Grammar, Composition
-6. **Biology** - Botany, Zoology, Genetics
-
-## File Structure
-
-```
-college2/
-├── index.html          # Main homepage
-├── css/
-│   └── style.css       # Main stylesheet
-├── js/
-│   └── script.js       # JavaScript functionality
-└── README.md           # This file
+# Production mode
+npm start
 ```
 
-## Technologies Used
+The server will start on `http://localhost:5000`
 
-- **HTML5**: Semantic markup and structure
-- **CSS3**: Advanced styling with Flexbox and Grid
-- **JavaScript**: Interactive functionality and dynamic content
-- **Font Awesome**: Icons for better visual appeal
-- **Google Fonts**: Clean typography
+## API Endpoints
 
-## Getting Started
+### Content Management
+- `GET /api/content` - Get all content (supports query filters)
+- `POST /api/content` - Add new content
+- `PUT /api/content/:id` - Update content by ID
+- `DELETE /api/content/:id` - Delete content by ID
 
-1. Clone or download the project files
-2. Open `index.html` in a web browser
-3. Navigate through different subjects and content types
-4. Use the responsive navigation for mobile devices
+### Statistics
+- `GET /api/stats` - Get content statistics
 
-## Browser Compatibility
+### Health Check
+- `GET /api/health` - Server health status
 
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
-- Mobile browsers (iOS Safari, Chrome Mobile)
+## Query Parameters for GET /api/content
 
-## Customization
+- `semester` - Filter by semester (1-6)
+- `subject` - Filter by subject name
+- `tab` - Filter by tab type (teacher-notes, student-notes, resources, assignments, pyqs, syllabus)
 
-### Adding New Subjects
+Example: `/api/content?semester=3&subject=database-management&tab=teacher-notes`
 
-To add a new subject, update the `subjectsData` object in `js/script.js`:
+## Frontend Integration
 
-```javascript
-'new-subject': {
-    title: 'New Subject',
-    'teacher-notes': [...],
-    'student-notes': [...],
-    // ... other content types
+The frontend automatically uses the API when the server is running. All content is stored in MongoDB instead of localStorage.
+
+## Data Structure
+
+Each content item has the following structure:
+```json
+{
+  "semester": 3,
+  "subject": "database-management",
+  "tab": "teacher-notes",
+  "title": "Introduction to DBMS",
+  "description": "Basic concepts of database management systems",
+  "type": "PDF",
+  "size": "2.5 MB",
+  "createdAt": "2025-07-14T10:30:00.000Z",
+  "updatedAt": "2025-07-14T10:30:00.000Z"
 }
 ```
 
-### Modifying Styles
+## Troubleshooting
 
-Edit `css/style.css` to customize:
-- Colors and themes
-- Layout and spacing
-- Typography
-- Responsive breakpoints
+1. **MongoDB Connection Issues**
+   - Check your connection string in `.env`
+   - Ensure your IP is whitelisted in MongoDB Atlas
+   - Verify database user credentials
 
-### Adding New Content Types
+2. **Port Already in Use**
+   - Change the PORT in `.env` file
+   - Kill existing processes using the port
 
-To add new content categories:
-1. Update the modal tabs in `index.html`
-2. Add corresponding data structure in `script.js`
-3. Update the tab switching functionality
+3. **CORS Issues**
+   - Server includes CORS middleware for cross-origin requests
+   - Frontend should work on any port
 
-## Future Enhancements
+## Development
 
-- User authentication system
-- Content upload functionality
-- Advanced search and filtering
-- Progress tracking
-- Discussion forums
-- Calendar integration
-- Offline access with service workers
-
-## Contributing
-
-Feel free to contribute by:
-- Adding more subjects
-- Improving the UI/UX
-- Adding new features
-- Fixing bugs
-- Optimizing performance
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Contact
-
-For questions or suggestions, please contact the development team.
-
----
-
-**EduHub** - Making education accessible and organized.
+For development, use `npm run dev` to enable auto-reload when files change.

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Test - EduHub</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #000; 
+            color: #fff; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            border: 1px solid #333; 
+            border-radius: 8px; 
+        }
+        button { 
+            padding: 10px 20px; 
+            margin: 5px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .status { 
+            background: #333; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin: 10px 0; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Admin Authentication Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Current Authentication Status</h2>
+        <div id="auth-status" class="status">Checking...</div>
+        <button class="btn-primary" onclick="checkStatus()">Refresh Status</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Actions</h2>
+        <button class="btn-danger" onclick="clearAllAdminData()">Clear All Admin Data</button>
+        <button class="btn-success" onclick="goToMain()">Go to Main Site</button>
+        <button class="btn-primary" onclick="goToAdminLogin()">Go to Admin Login</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Expected Behavior</h2>
+        <ul>
+            <li><strong>Regular Users:</strong> Should see only "Admin" button in navigation</li>
+            <li><strong>Logged in Admins:</strong> Should see "Upload" and "Logout" buttons</li>
+            <li><strong>Upload button should NEVER be visible to non-admin users</strong></li>
+        </ul>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        function checkStatus() {
+            const token = localStorage.getItem('adminToken');
+            const user = localStorage.getItem('adminUser');
+            const statusDiv = document.getElementById('auth-status');
+            
+            if (token) {
+                statusDiv.innerHTML = `
+                    <strong>ADMIN LOGGED IN</strong><br>
+                    Token: ${token.substring(0, 20)}...<br>
+                    User: ${user}<br>
+                    <span style="color: #28a745;">✅ Upload button should be VISIBLE</span>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <strong>GUEST USER</strong><br>
+                    No admin token found<br>
+                    <span style="color: #dc3545;">❌ Upload button should be HIDDEN</span>
+                `;
+            }
+        }
+        
+        function clearAllAdminData() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            alert('All admin data cleared! Now you should see only guest interface.');
+            checkStatus();
+        }
+        
+        function goToMain() {
+            window.location.href = '/';
+        }
+        
+        function goToAdminLogin() {
+            window.location.href = '/admin-login.html';
+        }
+        
+        // Check status on load
+        window.addEventListener('load', checkStatus);
+    </script>
+</body>
+</html>
